@@ -217,17 +217,29 @@ export default function CoursePage() {
                 </p>
               </div>
 
-              {activeLesson.pdfFile && (
+              <div className="flex flex-wrap gap-3">
                 <a
-                  href={encodePath(activeLesson.pdfFile)}
+                  href={encodePath(activeLesson.videoFile)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-4 py-2.5 bg-accent/15 text-accent hover:bg-accent/25 rounded-lg text-sm font-medium transition-colors shrink-0"
+                  download
+                  className="inline-flex items-center gap-2 px-4 py-2.5 bg-white/5 text-muted hover:text-foreground hover:bg-white/10 rounded-lg text-sm font-medium transition-colors shrink-0"
                 >
                   <DownloadIcon />
-                  Descarcă PDF
+                  Descarcă Video
                 </a>
-              )}
+                {activeLesson.pdfFile && (
+                  <a
+                    href={encodePath(activeLesson.pdfFile)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-4 py-2.5 bg-accent/15 text-accent hover:bg-accent/25 rounded-lg text-sm font-medium transition-colors shrink-0"
+                  >
+                    <DownloadIcon />
+                    Descarcă PDF
+                  </a>
+                )}
+              </div>
             </div>
 
             {/* PDF preview */}
