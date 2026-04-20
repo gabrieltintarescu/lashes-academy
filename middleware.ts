@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
+import { verifyToken } from "@/lib/auth";
 
-export function middleware(req: NextRequest) {
+export async function middleware(req: NextRequest) {
     const password = process.env.APP_PASSWORD;
 
     // If no password configured, allow access
@@ -9,8 +10,8 @@ export function middleware(req: NextRequest) {
     // Skip auth for the login API route
     if (req.nextUrl.pathname.startsWith("/api/login")) return NextResponse.next();
 
-    const authCookie = req.cookies.get("auth")?.value;
-    if (authCookie === password) return NextResponse.next();
+    const token = req.cookies.get("auth")?.value;
+    if (token && (await verifyToken(token))) return NextResponse.next();
 
     // Rewrite to login page
     const url = req.nextUrl.clone();

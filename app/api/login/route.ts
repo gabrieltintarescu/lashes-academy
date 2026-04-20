@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { createToken } from "@/lib/auth";
 
 export async function POST(req: NextRequest) {
     const { password } = await req.json();
@@ -9,8 +10,9 @@ export async function POST(req: NextRequest) {
     }
 
     if (password === correctPassword) {
+        const token = await createToken();
         const res = NextResponse.json({ ok: true });
-        res.cookies.set("auth", correctPassword, {
+        res.cookies.set("auth", token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
             sameSite: "strict",
