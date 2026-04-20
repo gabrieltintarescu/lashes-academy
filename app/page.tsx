@@ -63,6 +63,26 @@ function encodePath(filename: string) {
   return `/resources/${encodeURIComponent(filename)}`;
 }
 
+function triggerDownload(url: string, filename: string) {
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  a.target = "_blank";
+  // For cross-origin, use fetch + blob
+  fetch(url)
+    .then((res) => res.blob())
+    .then((blob) => {
+      const blobUrl = URL.createObjectURL(blob);
+      a.href = blobUrl;
+      a.click();
+      URL.revokeObjectURL(blobUrl);
+    })
+    .catch(() => {
+      // Fallback: open in new tab
+      window.open(url, "_blank");
+    });
+}
+
 function LessonLabel({ lesson }: { lesson: Lesson }) {
   if (lesson.number !== null) {
     return (
@@ -218,16 +238,13 @@ export default function CoursePage() {
               </div>
 
               <div className="flex flex-wrap gap-3">
-                <a
-                  href={encodePath(activeLesson.videoFile)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  download
+                <button
+                  onClick={() => triggerDownload(encodePath(activeLesson.videoFile), activeLesson.videoFile)}
                   className="inline-flex items-center gap-2 px-4 py-2.5 bg-white/5 text-muted hover:text-foreground hover:bg-white/10 rounded-lg text-sm font-medium transition-colors shrink-0"
                 >
                   <DownloadIcon />
                   Descarcă Video
-                </a>
+                </button>
                 {activeLesson.pdfFile && (
                   <a
                     href={encodePath(activeLesson.pdfFile)}

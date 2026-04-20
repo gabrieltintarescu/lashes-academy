@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from "next/server";
 import { verifyToken } from "@/lib/auth";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function middleware(req: NextRequest) {
     const password = process.env.APP_PASSWORD;
