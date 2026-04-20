@@ -38,4 +38,8 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+
+# course resources (too large for git)
+/public/resources/*.mp4
+/public/resources/*.pdf
 next-env.d.ts
